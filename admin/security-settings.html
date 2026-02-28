@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Security Settings · Lagos Prime Estates</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background-color: #f8f6f4;
+      color: #2a2a2a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+    .settings-box {
+      background: #ffffff;
+      border: 2px solid #2a405c;
+      border-radius: 8px;
+      box-shadow: 6px 6px 0 #a75828;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 500px;
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      color: #003153;
+      margin-bottom: 1.5rem;
+      border-left: 6px solid #c97c4d;
+      padding-left: 1rem;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      color: #1e2f47;
+      margin-bottom: 0.3rem;
+    }
+    input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid #b3bfcf;
+      border-radius: 6px;
+      background: #f8f6f4;
+      font-size: 1rem;
+      outline: none;
+    }
+    input:focus {
+      border-color: #003153;
+    }
+    .btn {
+      background-color: #003153;
+      color: white;
+      border: 2px solid #003153;
+      border-radius: 6px;
+      padding: 0.8rem 1.5rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
+      transition: 0.1s;
+    }
+    .btn:hover {
+      background-color: #0a4065;
+    }
+    .btn.secondary {
+      background-color: #c97c4d;
+      border-color: #a75828;
+      margin-top: 1rem;
+    }
+    .btn.secondary:hover {
+      background-color: #b45f2e;
+    }
+    .alert {
+      background-color: #f8d7da;
+      border: 1px solid #f5c2c7;
+      color: #842029;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+    .alert.success {
+      background-color: #d1e7dd;
+      border-color: #badbcc;
+      color: #0f5132;
+    }
+    .current-info {
+      background-color: #f0eae3;
+      border: 1px solid #b3a18b;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .current-info p {
+      margin-bottom: 0.5rem;
+    }
+    .current-info strong {
+      color: #003153;
+    }
+
+    /* Mobile responsive */
+@media (max-width: 480px) {
+  .settings-box {
+    padding: 1.5rem;
+    max-width: 90%;
+  }
+  h2 {
+    font-size: 1.5rem;
+  }
+  input {
+    padding: 0.6rem;
+  }
+  .btn {
+    padding: 0.6rem;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="settings-box">
+    <h2>Security settings</h2>
+
+    <!-- Message area -->
+    <div id="message" class="alert" style="display: none;"></div>
+
+    <!-- Current settings (loaded via JavaScript) -->
+    <div class="current-info" id="current-info">
+      <p><strong>Current security question:</strong> <span id="current-question">Loading...</span></p>
+    </div>
+
+    <form method="POST" action="/admin/security-settings">
+      <div class="form-group">
+        <label>Current password (required)</label>
+        <input type="password" name="current_password" required>
+      </div>
+      <div class="form-group">
+        <label>New security question</label>
+        <input type="text" name="security_question" placeholder="Leave blank to keep current">
+      </div>
+      <div class="form-group">
+        <label>New security answer</label>
+        <input type="text" name="security_answer" placeholder="Leave blank to keep current">
+        <p style="font-size:0.85rem; color:#5e6e85; margin-top:0.3rem;">Answer is case‑insensitive and trimmed.</p>
+      </div>
+      <button type="submit" class="btn">Update security settings</button>
+      <a href="/admin/dashboard" class="btn secondary">Cancel</a>
+    </form>
+  </div>
+
+  <script>
+    // Fetch current security question
+    fetch('/api/admin/question')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('current-question').textContent = data.question;
+      })
+      .catch(() => {
+        document.getElementById('current-question').textContent = 'Unable to load';
+      });
+
+    // Handle error/success messages
+    const urlParams = new URLSearchParams(window.location.search);
+    const messageDiv = document.getElementById('message');
+    if (urlParams.get('error') === 'incorrect') {
+      messageDiv.textContent = 'Current password is incorrect.';
+      messageDiv.style.display = 'block';
+    } else if (urlParams.get('success') === '1') {
+      messageDiv.textContent = 'Security settings updated successfully.';
+      messageDiv.classList.add('success');
+      messageDiv.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

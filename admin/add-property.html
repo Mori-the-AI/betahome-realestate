@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add property · Lagos Prime Estates</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background-color: #f8f6f4;
+      color: #2a2a2a;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: #003153;
+      border-left: 8px solid #c97c4d;
+      padding-left: 1.4rem;
+      margin-bottom: 2rem;
+    }
+    .form-card {
+      background: white;
+      border: 2px solid #2a405c;
+      border-radius: 8px;
+      box-shadow: 6px 6px 0 #a75828;
+      padding: 2rem;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      color: #1e2f47;
+      margin-bottom: 0.3rem;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1px solid #b3bfcf;
+      border-radius: 6px;
+      background: #f8f6f4;
+      font-size: 1rem;
+      outline: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #003153;
+    }
+    .checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .checkbox input {
+      width: auto;
+    }
+    .btn {
+      background-color: #003153;
+      color: white;
+      border: 2px solid #003153;
+      border-radius: 6px;
+      padding: 0.8rem 2rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .btn:hover {
+      background-color: #0a4065;
+    }
+    .btn.secondary {
+      background-color: #c97c4d;
+      border-color: #a75828;
+      margin-left: 1rem;
+    }
+    .btn.secondary:hover {
+      background-color: #b45f2e;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Add new property</h2>
+    <div class="form-card">
+      <form method="POST" action="/admin/properties" enctype="multipart/form-data">
+        <div class="form-group">
+          <label>Title *</label>
+          <input type="text" name="title" required>
+        </div>
+        <div class="form-group">
+          <label>Location *</label>
+          <input type="text" name="location" required>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Price (₦)</label>
+            <input type="text" name="price">
+          </div>
+          <div class="form-group">
+            <label>Price label</label>
+            <input type="text" name="price_small" placeholder="negotiable">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Bedrooms</label>
+            <input type="number" step="0.5" name="bedrooms">
+          </div>
+          <div class="form-group">
+            <label>Bathrooms</label>
+            <input type="number" step="0.5" name="bathrooms">
+          </div>
+          <div class="form-group">
+            <label>Area (sqm)</label>
+            <input type="text" name="area">
+          </div>
+          <div class="form-group">
+            <label>Parking</label>
+            <input type="number" name="parking">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea name="description" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Features (comma separated)</label>
+          <input type="text" name="features" placeholder="24/7 security, Backup generator, ...">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Property type</label>
+            <select name="property_type">
+              <option>House</option>
+              <option>Apartment</option>
+              <option>Land</option>
+              <option>Commercial</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <select name="status">
+              <option>For Sale</option>
+              <option>For Rent</option>
+              <option>Sold</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Agent ID</label>
+            <input type="text" name="agent_id">
+          </div>
+        </div>
+        <div class="form-group checkbox">
+          <input type="checkbox" name="featured" id="featured">
+          <label for="featured">Featured property</label>
+        </div>
+        <div class="form-group">
+          <label>Main image</label>
+          <input type="file" name="main_image" accept="image/*">
+        </div>
+        <div class="form-group">
+          <label>Thumbnails (multiple)</label>
+          <input type="file" name="thumbnails" multiple accept="image/*">
+        </div>
+        <div>
+          <button type="submit" class="btn">Save property</button>
+          <a href="/admin/dashboard" class="btn secondary">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

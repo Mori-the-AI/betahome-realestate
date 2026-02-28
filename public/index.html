@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Betahome Betahouse Nigeria Limited | Real Estate & Building Materials</title>
+  <!-- Font Awesome 5 (icons only) -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <!-- Google Fonts: Playfair Display for headings, Inter for body -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8f6f4;
+      color: #2a2a2a;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .logo h1, .section-title, .card-content h3, .agent-name, .testimonial-name {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    /* animations */
+    @keyframes fadeSlideUp {
+      0% { opacity: 0; transform: translateY(24px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+
+    .animate-up {
+      animation: fadeSlideUp 0.7s ease-out forwards;
+    }
+
+    .animate-in {
+      animation: fadeIn 0.9s ease-out forwards;
+    }
+
+    /* header */
+    .header {
+      background-color: #ffffff;
+      border-bottom: 3px solid #c97c4d;
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    }
+
+    .header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .logo h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #003153;
+    }
+
+    .logo span {
+      font-size: 1rem;
+      font-weight: 500;
+      color: #b86b3a;
+      display: block;
+      line-height: 1.2;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Desktop navigation */
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .nav-links a {
+      color: #1e2f47;
+      text-decoration: none;
+      margin-left: 2rem;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: color 0.2s, border-color 0.2s;
+      padding-bottom: 0.3rem;
+      border-bottom: 2px solid transparent;
+    }
+
+    .nav-links a:hover {
+      color: #b85c24;
+      border-bottom-color: #b85c24;
+    }
+
+    /* Mobile menu toggle (hidden on desktop) */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: #003153;
+      font-size: 1.8rem;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    /* Mobile menu overlay */
+    .mobile-menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 280px;
+      height: 100vh;
+      background-color: #ffffff;
+      border-left: 3px solid #c97c4d;
+      box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+      z-index: 100;
+      transition: right 0.3s ease-in-out;
+      padding: 5rem 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .mobile-menu.open {
+      right: 0;
+    }
+
+    .mobile-menu a {
+      color: #1e2f47;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.2rem;
+      padding: 1rem 0;
+      border-bottom: 1px solid #eee;
+      transition: color 0.2s;
+    }
+
+    .mobile-menu a:hover {
+      color: #b85c24;
+    }
+
+    .mobile-menu .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 2rem;
+      color: #003153;
+      cursor: pointer;
+    }
+
+    /* Overlay background when menu open */
+    .menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 90;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s;
+    }
+
+    .menu-overlay.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* hero, stats, etc. */
+    .hero {
+      background-color: #c97c4d;
+      padding: 3rem 0 4rem 0;
+      border-bottom: 4px solid #a75828;
+    }
+
+    .hero .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .hero-content {
+      flex: 1 1 400px;
+      opacity: 0;
+      animation: fadeSlideUp 0.8s 0.1s forwards;
+    }
+
+    .hero-content h2 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+      color: #ffe7da;
+      margin-bottom: 2rem;
+      max-width: 550px;
+    }
+
+    /* search bar */
+    .search-bar {
+      background: #ffffff;
+      padding: 1.5rem;
+      border: 3px solid #003153;
+      box-shadow: 10px 10px 0 #b45f2e;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+      opacity: 0;
+      animation: fadeIn 0.7s 0.3s forwards;
+    }
+
+    .search-field {
+      flex: 1 1 180px;
+      display: flex;
+      align-items: center;
+      background: #f0f0f0;
+      border: 1px solid #ccd2d9;
+      padding: 0.5rem 1rem;
+    }
+
+    .search-field i {
+      color: #003153;
+      margin-right: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .search-field select, .search-field input {
+      border: none;
+      background: transparent;
+      width: 100%;
+      font-size: 0.95rem;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+    }
+
+    .search-btn {
+      background-color: #003153;
+      color: white;
+      border: none;
+      padding: 0.7rem 2rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 2px solid #003153;
+      transition: 0.15s;
+      font-size: 1rem;
+    }
+
+    .search-btn:hover {
+      background-color: #0a4065;
+    }
+
+    .hero-stats {
+      flex: 0 1 300px;
+      background: #ffffff;
+      padding: 2rem;
+      border: 4px solid #003153;
+      box-shadow: 12px 12px 0 #b45f2e;
+      opacity: 0;
+      animation: fadeIn 0.7s 0.3s forwards;
+    }
+
+    .stat-item {
+      margin-bottom: 1.8rem;
+    }
+
+    .stat-item .number {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #003153;
+      line-height: 1;
+    }
+
+    .stat-item .label {
+      font-size: 1rem;
+      color: #494e57;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-weight: 500;
+    }
+
+    /* category strip */
+    .category-strip {
+      background-color: #e7d9cc;
+      border-top: 3px solid #c97c4d;
+      border-bottom: 3px solid #c97c4d;
+      padding: 2.8rem 0;
+    }
+
+    .category-strip .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 2rem;
+      text-align: center;
+    }
+
+    .cat-item {
+      flex: 1 1 150px;
+      transition: transform 0.15s;
+      opacity: 0;
+      animation: fadeIn 0.5s forwards;
+    }
+    .cat-item:nth-child(1) { animation-delay: 0.15s; }
+    .cat-item:nth-child(2) { animation-delay: 0.3s; }
+    .cat-item:nth-child(3) { animation-delay: 0.45s; }
+
+    .cat-item:hover {
+      transform: scale(1.02);
+    }
+
+    .cat-item i {
+      font-size: 3rem;
+      color: #003153;
+      margin-bottom: 0.5rem;
+    }
+
+    .cat-item h4 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.3rem;
+      color: #003153;
+    }
+
+    .cat-item p {
+      color: #2c3a4b;
+      font-weight: 500;
+    }
+
+    /* section title */
+    .section-title {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #00284d;
+      margin: 3rem 0 2rem 0;
+      border-left: 8px solid #c97c4d;
+      padding-left: 1.4rem;
+    }
+
+    /* cards grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0 3rem;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border: 2px solid #2a405c;
+      border-radius: 8px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 6px 6px 0 #a75828;
+      opacity: 0;
+      animation: fadeSlideUp 0.6s forwards;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.1s; }
+    .card:nth-child(2) { animation-delay: 0.2s; }
+    .card:nth-child(3) { animation-delay: 0.3s; }
+    .card:nth-child(4) { animation-delay: 0.4s; }
+
+    .card:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 12px 12px 0 #b45f2e;
+    }
+
+    .badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background-color: #c97c4d;
+      color: white;
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 0.3rem 1rem;
+      border: 1px solid #9d4e24;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      z-index: 2;
+      border-radius: 4px;
+    }
+
+    .card-img {
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+      border-bottom: 3px solid #c97c4d;
+      display: block;
+    }
+
+    .card-content {
+      padding: 1.5rem 1.2rem 2rem;
+    }
+
+    .card-content h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #003153;
+      margin-bottom: 0.4rem;
+    }
+
+    .card-content p {
+      color: #3e4d5f;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .property-type {
+      display: inline-block;
+      background-color: #c97c4d;
+      color: #ffffff;
+      padding: 0.25rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.9rem;
+      border: 1px solid #9d4e24;
+      border-radius: 4px;
+    }
+
+    .price {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #003153;
+    }
+
+    .price small {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: #5a6879;
+    }
+
+    /* neighborhood guides */
+    .neighborhood-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0 3rem;
+    }
+
+    .neighborhood-card {
+      background: #ffffff;
+      border: 2px solid #2a405c;
+      border-radius: 8px;
+      box-shadow: 6px 6px 0 #a75828;
+      padding: 1.8rem 1.5rem;
+      transition: 0.15s;
+      opacity: 0;
+      animation: fadeSlideUp 0.5s forwards;
+    }
+    .neighborhood-card:nth-child(1) { animation-delay: 0.1s; }
+    .neighborhood-card:nth-child(2) { animation-delay: 0.2s; }
+    .neighborhood-card:nth-child(3) { animation-delay: 0.3s; }
+
+    .neighborhood-card:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 10px 10px 0 #b45f2e;
+    }
+
+    .neighborhood-card h4 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #003153;
+      margin-bottom: 0.5rem;
+    }
+
+    .neighborhood-card p {
+      color: #3a4a5e;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    .neighborhood-stats {
+      font-weight: 600;
+      color: #c97c4d;
+      border-top: 1px solid #ccc;
+      padding-top: 0.8rem;
+    }
+
+    /* agents */
+    .agents-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2.5rem;
+      margin: 2rem 0 3rem;
+    }
+
+    .agent-card {
+      background: #ffffff;
+      border: 2px solid #2a405c;
+      border-radius: 8px;
+      box-shadow: 6px 6px 0 #a75828;
+      padding: 1.5rem;
+      text-align: center;
+      opacity: 0;
+      animation: fadeSlideUp 0.5s forwards;
+    }
+    .agent-card:nth-child(1) { animation-delay: 0.1s; }
+    .agent-card:nth-child(2) { animation-delay: 0.2s; }
+
+    .agent-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #c97c4d;
+      margin-bottom: 1rem;
+    }
+
+    .agent-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #003153;
+      margin-bottom: 0.3rem;
+    }
+
+    .agent-role {
+      color: #b45f2e;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+
+    .agent-contact {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-top: 0.8rem;
+    }
+
+    .agent-contact a {
+      color: #003153;
+      font-size: 1.2rem;
+      transition: color 0.1s;
+    }
+
+    .agent-contact a:hover {
+      color: #c97c4d;
+    }
+
+    /* testimonials */
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0 3rem;
+    }
+
+    .testimonial-card {
+      background: #ffffff;
+      border: 2px solid #2a405c;
+      border-radius: 8px;
+      box-shadow: 6px 6px 0 #a75828;
+      padding: 2rem 1.8rem;
+      opacity: 0;
+      animation: fadeSlideUp 0.5s forwards;
+    }
+    .testimonial-card:nth-child(1) { animation-delay: 0.1s; }
+    .testimonial-card:nth-child(2) { animation-delay: 0.2s; }
+
+    .testimonial-card i {
+      color: #c97c4d;
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      opacity: 0.6;
+    }
+
+    .testimonial-text {
+      font-style: italic;
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .testimonial-author img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #c97c4d;
+    }
+
+    .testimonial-name {
+      font-weight: 700;
+      color: #003153;
+    }
+
+    .testimonial-location {
+      font-size: 0.85rem;
+      color: #6b7a8f;
+    }
+
+    /* sticky contact bar */
+    .sticky-contact {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #003153;
+      color: white;
+      padding: 0.8rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      z-index: 30;
+      border-top: 3px solid #c97c4d;
+      font-weight: 500;
+    }
+
+    .sticky-contact a {
+      background-color: #c97c4d;
+      color: white;
+      text-decoration: none;
+      padding: 0.5rem 1.8rem;
+      font-weight: 700;
+      border: 2px solid #a75828;
+      border-radius: 6px;
+      transition: 0.1s;
+    }
+
+    .sticky-contact a:hover {
+      background-color: #b45f2e;
+    }
+
+    /* footer */
+    .footer {
+      background-color: #0f263b;
+      color: #e3eef9;
+      padding: 3rem 0 1.8rem;
+      font-size: 0.95rem;
+      border-top: 5px solid #b45f2e;
+      margin-bottom: 60px;
+    }
+
+    .footer .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .footer-col {
+      flex: 1 1 200px;
+    }
+
+    .footer-col h5 {
+      color: #ffffff;
+      font-weight: 700;
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.5px;
+      border-left: 4px solid #c97c4d;
+      padding-left: 0.8rem;
+    }
+
+    .footer-col a {
+      color: #cbd8e8;
+      text-decoration: none;
+      display: block;
+      margin-bottom: 0.7rem;
+      font-weight: 400;
+      transition: color 0.1s, padding-left 0.1s;
+    }
+
+    .footer-col a:hover {
+      color: #f5b688;
+      padding-left: 5px;
+    }
+
+    .copyright {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 2px solid #375673;
+      color: #b4c6dd;
+      font-size: 0.9rem;
+    }
+
+    /* Floating WhatsApp button */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background-color: #c97c4d;
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      text-align: center;
+      font-size: 30px;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+      border: 2px solid #a75828;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      z-index: 100;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .whatsapp-float:hover {
+      background-color: #b45f2e;
+      transform: scale(1.05);
+    }
+
+    /* ========== MOBILE RESPONSIVENESS ========== */
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 1.5rem;
+      }
+
+      .header .container {
+        flex-wrap: nowrap;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      .hero .container {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .hero-content h2 {
+        font-size: 2rem;
+      }
+
+      .search-bar {
+        flex-direction: column;
+        padding: 1rem;
+      }
+
+      .search-field {
+        padding: 0.4rem 0.8rem;
+      }
+
+      .search-btn {
+        width: 100%;
+        padding: 0.7rem;
+      }
+
+      .hero-stats {
+        width: 100%;
+        padding: 1.5rem;
+      }
+
+      .category-strip .container {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .cat-item i {
+        font-size: 2.5rem;
+      }
+
+      .cat-item h4 {
+        font-size: 1.3rem;
+      }
+
+      .card-grid,
+      .neighborhood-grid,
+      .agents-grid,
+      .testimonial-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .sticky-contact {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.5rem;
+        padding: 0.8rem 1rem;
+      }
+
+      .sticky-contact a {
+        width: 100%;
+      }
+
+      .footer .container {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .footer-col {
+        margin-bottom: 1rem;
+      }
+
+      .whatsapp-float {
+        bottom: 80px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 1rem;
+      }
+
+      .logo h1 {
+        font-size: 1.6rem;
+      }
+      .logo span {
+        font-size: 0.9rem;
+      }
+
+      .hero-content h2 {
+        font-size: 1.8rem;
+      }
+      .hero-content p {
+        font-size: 1rem;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+        padding-left: 1rem;
+        margin: 2rem 0 1.5rem;
+      }
+
+      .card-content h3 {
+        font-size: 1.2rem;
+      }
+      .price {
+        font-size: 1.4rem;
+      }
+
+      .agent-img {
+        width: 100px;
+        height: 100px;
+      }
+      .agent-name {
+        font-size: 1.1rem;
+      }
+      .agent-role {
+        font-size: 0.9rem;
+      }
+
+      .testimonial-card {
+        padding: 1.5rem 1.2rem;
+      }
+
+      .whatsapp-float {
+        bottom: 70px;
+        right: 10px;
+        width: 50px;
+        height: 50px;
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header with mobile menu -->
+<header class="header">
+  <div class="container">
+    <div class="logo">
+      <h1>BETAHOME BETAHOUSE NIGERIA LIMITED</h1>
+      <span>Houses · Apartments · Lands · Materials</span>
+    </div>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="properties.html">Properties</a>
+      <a href="lands.html">Lands</a>
+      <a href="materials.html">Materials</a>
+      <a href="agents.html">Agents</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+      <i class="fas fa-bars"></i>
+    </button>
+  </div>
+</header>
+
+<!-- Mobile menu overlay -->
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<!-- Mobile menu panel -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-btn" id="closeMenu"><i class="fas fa-times"></i></button>
+  <a href="index.html">Home</a>
+  <a href="properties.html">Properties</a>
+  <a href="lands.html">Lands</a>
+  <a href="materials.html">Materials</a>
+  <a href="agents.html">Agents</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<!-- Hero with search bar -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <h2>Find your perfect Lagos property</h2>
+      <p>Premium houses, apartments, and land in Ikoyi, Lekki, Victoria Island and beyond.</p>
+      <!-- Search bar (options will be populated dynamically) -->
+      <div class="search-bar">
+        <div class="search-field">
+          <i class="fas fa-map-marker-alt"></i>
+          <select id="search-location">
+            <option value="">Location</option>
+          </select>
+        </div>
+        <div class="search-field">
+          <i class="fas fa-building"></i>
+          <select id="search-type">
+            <option value="">Property type</option>
+          </select>
+        </div>
+        <div class="search-field">
+          <i class="fas fa-naira-sign"></i>
+          <input type="text" id="search-maxprice" placeholder="Max price">
+        </div>
+        <button class="search-btn" id="search-btn">Search</button>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="number">1,200+</div>
+        <div class="label">properties sold</div>
+      </div>
+      <div class="stat-item">
+        <div class="number">850+</div>
+        <div class="label">happy families</div>
+      </div>
+      <div class="stat-item">
+        <div class="number">15+</div>
+        <div class="label">years in Lagos</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Categories -->
+<div class="category-strip">
+  <div class="container">
+    <div class="cat-item">
+      <i class="fas fa-home"></i>
+      <h4>Houses</h4>
+      <p>Detached duplex, bungalows, terraces</p>
+    </div>
+    <div class="cat-item">
+      <i class="fas fa-building"></i>
+      <h4>Apartments</h4>
+      <p>Flats, penthouses, serviced apartments</p>
+    </div>
+    <div class="cat-item">
+      <i class="fas fa-map-marked-alt"></i>
+      <h4>Lands</h4>
+      <p>Commercial, residential, development plots</p>
+    </div>
+  </div>
+</div>
+
+<!-- Featured properties (dynamic) -->
+<div class="container">
+  <h2 class="section-title">Featured properties</h2>
+  <div class="card-grid" id="featured-properties">
+    <!-- Loading indicator -->
+    <div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #5e6e85;">Loading featured properties...</div>
+  </div>
+</div>
+
+<!-- Neighborhood guides -->
+<div class="container">
+  <h2 class="section-title">Popular Lagos neighborhoods</h2>
+  <div class="neighborhood-grid">
+    <div class="neighborhood-card">
+      <h4>Ikoyi</h4>
+      <p>Exclusive, serene, diplomatic enclave. Luxury homes and high-end apartments.</p>
+      <div class="neighborhood-stats">Avg. price: ₦250M - ₦800M</div>
+    </div>
+    <div class="neighborhood-card">
+      <h4>Lekki Phase 1</h4>
+      <p>Vibrant, family-friendly, excellent amenities. Houses and modern flats.</p>
+      <div class="neighborhood-stats">Avg. price: ₦120M - ₦450M</div>
+    </div>
+    <div class="neighborhood-card">
+      <h4>Victoria Island</h4>
+      <p>Business hub, luxury apartments, waterfront views.</p>
+      <div class="neighborhood-stats">Avg. price: ₦200M - ₦1.2B</div>
+    </div>
+  </div>
+</div>
+
+<!-- Agent spotlights -->
+<div class="container">
+  <h2 class="section-title">Meet our experts</h2>
+  <div class="agents-grid">
+    <div class="agent-card">
+      <img class="agent-img" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Amara Okafor">
+      <div class="agent-name">Amara Okafor</div>
+      <div class="agent-role">Lekki / Ikoyi Specialist</div>
+      <p style="color: #4e5f72; margin: 0.5rem 0;">12+ years experience</p>
+      <div class="agent-contact">
+        <a href="#"><i class="fas fa-phone-alt"></i></a>
+        <a href="#"><i class="fas fa-envelope"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="agent-card">
+      <img class="agent-img" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Femi Adebayo">
+      <div class="agent-name">Femi Adebayo</div>
+      <div class="agent-role">Land & Commercial</div>
+      <p style="color: #4e5f72; margin: 0.5rem 0;">10+ years experience</p>
+      <div class="agent-contact">
+        <a href="#"><i class="fas fa-phone-alt"></i></a>
+        <a href="#"><i class="fas fa-envelope"></i></a>
+        <a href="#"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Testimonials -->
+<div class="container">
+  <h2 class="section-title">What our clients say</h2>
+  <div class="testimonial-grid">
+    <div class="testimonial-card">
+      <i class="fas fa-quote-left"></i>
+      <p class="testimonial-text">"Betahome Betahouse helped me secure my dream home in Lekki. Their team was transparent and professional throughout."</p>
+      <div class="testimonial-author">
+        <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="Tunde Bakare">
+        <div>
+          <div class="testimonial-name">Tunde Bakare</div>
+          <div class="testimonial-location">Lekki Phase 1</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <i class="fas fa-quote-left"></i>
+      <p class="testimonial-text">"I sold my land in Ajah within 3 weeks. Excellent valuation and marketing. Highly recommended."</p>
+      <div class="testimonial-author">
+        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Chidinma Nwosu">
+        <div>
+          <div class="testimonial-name">Chidinma Nwosu</div>
+          <div class="testimonial-location">Ajah</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-col">
+      <h5>Betahome Betahouse Nigeria Limited</h5>
+      <p>14B Adeola Odeku Street, Victoria Island, Lagos, Nigeria.</p>
+      <p>+234 (0) 802 345 6789</p>
+      <p>info@betahomebetahouse.ng</p>
+    </div>
+    <div class="footer-col">
+      <h5>Property types</h5>
+      <a href="#">Houses</a>
+      <a href="#">Apartments</a>
+      <a href="#">Lands</a>
+      <a href="#">Commercial</a>
+    </div>
+    <div class="footer-col">
+      <h5>Locations</h5>
+      <a href="#">Ikoyi</a>
+      <a href="#">Lekki</a>
+      <a href="#">Victoria Island</a>
+      <a href="#">Ajah</a>
+      <a href="#">Ikeja</a>
+    </div>
+    <div class="footer-col">
+      <h5>Company</h5>
+      <a href="#">About us</a>
+      <a href="#">Agents</a>
+      <a href="#">Testimonials</a>
+      <a href="#">Privacy policy</a>
+    </div>
+  </div>
+  <div class="copyright">
+    <p>© 2026 Betahome Betahouse Nigeria Limited. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- Sticky contact bar -->
+<div class="sticky-contact">
+  <span><i class="fas fa-phone-alt" style="margin-right: 8px;"></i> +234 801 234 5678</span>
+  <a href="contact.html">Request a viewing</a>
+</div>
+
+<!-- JavaScript to load featured properties -->
+<script>
+  async function loadFeaturedProperties() {
+    const container = document.getElementById('featured-properties');
+    try {
+      const res = await fetch('/api/properties?limit=100');
+      const data = await res.json();
+      const featured = data.data.filter(p => p.featured === true);
+      if (featured.length === 0) {
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #5e6e85;">No featured properties at the moment.</div>';
+        return;
+      }
+      let html = '';
+      featured.forEach(p => {
+        let statusBadge = '';
+        if (p.status === 'For Rent') {
+          statusBadge = '<div class="badge" style="left:12px; right:auto; background:#c97c4d;">FOR RENT</div>';
+        } else if (p.status === 'Sold') {
+          statusBadge = '<div class="badge" style="left:12px; right:auto; background:#6c757d;">SOLD</div>';
+        }
+        html += `
+          <div class="card">
+            ${p.featured ? '<div class="badge" style="right:12px;">Featured</div>' : ''}
+            ${statusBadge}
+            <img class="card-img" src="${p.main_image || 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&w=600'}" alt="${p.title}">
+            <div class="card-content">
+              <span class="property-type">${p.property_type || 'Property'}</span>
+              <h3>${p.title}</h3>
+              <p>${p.location} · ${p.bedrooms || 0} bed · ${p.bathrooms || 0} bath · ${p.area || ''}</p>
+              <div class="price">₦${p.price} <small>${p.price_small || ''}</small></div>
+            </div>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    } catch (err) {
+      console.error('Failed to load featured properties', err);
+      container.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 2rem; color: #b85c24;">Unable to load featured properties. Please try again later.</div>';
+    }
+  }
+  loadFeaturedProperties();
+</script>
+
+<!-- Mobile menu toggle script -->
+<script>
+  const menuToggle = document.getElementById('menuToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const menuOverlay = document.getElementById('menuOverlay');
+  const closeMenu = document.getElementById('closeMenu');
+
+  function openMenu() {
+    mobileMenu.classList.add('open');
+    menuOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenuFunc() {
+    mobileMenu.classList.remove('open');
+    menuOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  menuToggle.addEventListener('click', openMenu);
+  closeMenu.addEventListener('click', closeMenuFunc);
+  menuOverlay.addEventListener('click', closeMenuFunc);
+
+  const mobileLinks = document.querySelectorAll('.mobile-menu a');
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', closeMenuFunc);
+  });
+</script>
+
+<!-- Dynamic search dropdowns and button functionality -->
+<script>
+  (function() {
+    // Populate location and type dropdowns from API
+    async function populateSearchFilters() {
+      try {
+        const res = await fetch('/api/properties?limit=1000');
+        const data = await res.json();
+        const properties = data.data;
+
+        // Get unique locations
+        const locations = [...new Set(properties.map(p => p.location).filter(Boolean))].sort();
+        const locationSelect = document.getElementById('search-location');
+        locations.forEach(loc => {
+          const option = document.createElement('option');
+          option.value = loc;
+          option.textContent = loc;
+          locationSelect.appendChild(option);
+        });
+
+        // Get unique property types
+        const types = [...new Set(properties.map(p => p.property_type).filter(Boolean))].sort();
+        const typeSelect = document.getElementById('search-type');
+        types.forEach(t => {
+          const option = document.createElement('option');
+          option.value = t;
+          option.textContent = t;
+          typeSelect.appendChild(option);
+        });
+      } catch (err) {
+        console.error('Failed to populate search filters', err);
+      }
+    }
+
+    // Search button click handler
+    function setupSearch() {
+      const searchBtn = document.getElementById('search-btn');
+      if (!searchBtn) return;
+
+      searchBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        const location = document.getElementById('search-location').value;
+        const type = document.getElementById('search-type').value;
+        const maxPrice = document.getElementById('search-maxprice').value;
+
+        const params = new URLSearchParams();
+        if (location && location !== '') params.set('location', location);
+        if (type && type !== '') params.set('type', type);
+        if (maxPrice && maxPrice.trim() !== '') params.set('maxPrice', maxPrice.trim());
+
+        window.location.href = 'properties.html?' + params.toString();
+      });
+    }
+
+    populateSearchFilters();
+    setupSearch();
+  })();
+</script>
+
+<!-- Floating WhatsApp Button -->
+<a href="https://wa.me/2348012345678?text=Hello%2C%20I'm%20interested%20in%20your%20properties.%20My%20name%20is%20%5BName%5D.%20I%20would%20like%20to%20inquire%20about%20%5Bpurpose%5D." 
+   target="_blank" 
+   class="whatsapp-float" 
+   aria-label="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+</body>
+</html>

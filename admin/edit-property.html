@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Property · Lagos Prime Estates</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background-color: #f8f6f4;
+      color: #2a2a2a;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: #003153;
+      border-left: 8px solid #c97c4d;
+      padding-left: 1.4rem;
+      margin-bottom: 2rem;
+    }
+    .form-card {
+      background: white;
+      border: 2px solid #2a405c;
+      border-radius: 8px;
+      box-shadow: 6px 6px 0 #a75828;
+      padding: 2rem;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      color: #1e2f47;
+      margin-bottom: 0.3rem;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1px solid #b3bfcf;
+      border-radius: 6px;
+      background: #f8f6f4;
+      font-size: 1rem;
+      outline: none;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #003153;
+    }
+    .checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .checkbox input {
+      width: auto;
+    }
+    .btn {
+      background-color: #003153;
+      color: white;
+      border: 2px solid #003153;
+      border-radius: 6px;
+      padding: 0.8rem 2rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .btn:hover {
+      background-color: #0a4065;
+    }
+    .btn.secondary {
+      background-color: #c97c4d;
+      border-color: #a75828;
+      margin-left: 1rem;
+    }
+    .btn.secondary:hover {
+      background-color: #b45f2e;
+    }
+    .btn.danger {
+      background-color: #b45f2e;
+      border-color: #8a4a23;
+    }
+    .btn.danger:hover {
+      background-color: #9e4f20;
+    }
+
+    /* Image gallery */
+    .image-gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .image-item {
+      position: relative;
+      width: 120px;
+      height: 90px;
+      border: 2px solid #c97c4d;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .image-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .image-item .delete-btn {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+    .image-item .delete-btn:hover {
+      background: #b45f2e;
+    }
+    .main-image-label {
+      font-size: 0.85rem;
+      color: #003153;
+      margin-top: 0.2rem;
+      font-weight: 600;
+    }
+    .alert {
+      background-color: #d1e7dd;
+      border: 1px solid #badbcc;
+      color: #0f5132;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      margin-bottom: 1.5rem;
+    }
+    .alert.error {
+      background-color: #f8d7da;
+      border-color: #f5c2c7;
+      color: #842029;
+    }
+
+    @media (max-width: 480px) {
+      .form-card { padding: 1.5rem; }
+      .image-item { width: 100px; height: 75px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Edit property</h2>
+    <div class="form-card" id="editFormContainer">
+      <!-- form will be inserted by JavaScript -->
+    </div>
+  </div>
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const propertyId = urlParams.get('id');
+    if (!propertyId) {
+      window.location.href = '/admin/dashboard';
+    }
+
+    let currentProperty = null;
+
+    // Load property data
+    async function loadProperty() {
+      try {
+        const res = await fetch(`/api/properties/${propertyId}`);
+        if (!res.ok) throw new Error('Property not found');
+        const p = await res.json();
+        currentProperty = p;
+        renderForm(p);
+      } catch (err) {
+        document.body.innerHTML = '<h2>Property not found</h2><a href="/admin/dashboard">Back to dashboard</a>';
+      }
+    }
+
+    // Render the form with current property data
+    function renderForm(p) {
+      const container = document.getElementById('editFormContainer');
+      container.innerHTML = `
+        <form method="POST" action="/admin/properties/${p.id}" enctype="multipart/form-data">
+          <div class="form-group">
+            <label>Title *</label>
+            <input type="text" name="title" value="${escapeHtml(p.title)}" required>
+          </div>
+          <div class="form-group">
+            <label>Location *</label>
+            <input type="text" name="location" value="${escapeHtml(p.location)}" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Price (₦)</label>
+              <input type="text" name="price" value="${escapeHtml(p.price)}">
+            </div>
+            <div class="form-group">
+              <label>Price label</label>
+              <input type="text" name="price_small" value="${escapeHtml(p.price_small || '')}">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Bedrooms</label>
+              <input type="number" step="0.5" name="bedrooms" value="${p.bedrooms || ''}">
+            </div>
+            <div class="form-group">
+              <label>Bathrooms</label>
+              <input type="number" step="0.5" name="bathrooms" value="${p.bathrooms || ''}">
+            </div>
+            <div class="form-group">
+              <label>Area (sqm)</label>
+              <input type="text" name="area" value="${escapeHtml(p.area || '')}">
+            </div>
+            <div class="form-group">
+              <label>Parking</label>
+              <input type="number" name="parking" value="${p.parking || ''}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea name="description" rows="4">${escapeHtml(p.description || '')}</textarea>
+          </div>
+          <div class="form-group">
+            <label>Features (comma separated)</label>
+            <input type="text" name="features" value="${p.features ? p.features.join(', ') : ''}">
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Property type</label>
+              <select name="property_type">
+                <option ${p.property_type === 'House' ? 'selected' : ''}>House</option>
+                <option ${p.property_type === 'Apartment' ? 'selected' : ''}>Apartment</option>
+                <option ${p.property_type === 'Land' ? 'selected' : ''}>Land</option>
+                <option ${p.property_type === 'Commercial' ? 'selected' : ''}>Commercial</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Status</label>
+              <select name="status">
+                <option ${p.status === 'For Sale' ? 'selected' : ''}>For Sale</option>
+                <option ${p.status === 'For Rent' ? 'selected' : ''}>For Rent</option>
+                <option ${p.status === 'Sold' ? 'selected' : ''}>Sold</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Agent ID</label>
+              <input type="text" name="agent_id" value="${escapeHtml(p.agent_id || '')}">
+            </div>
+          </div>
+          <div class="form-group checkbox">
+            <input type="checkbox" name="featured" id="featured" ${p.featured ? 'checked' : ''}>
+            <label for="featured">Featured property</label>
+          </div>
+
+          <!-- Current images with delete buttons -->
+          <div class="form-group">
+            <label>Current images</label>
+            <div id="current-images" class="image-gallery"></div>
+          </div>
+
+          <div class="form-group">
+            <label>Replace main image (leave empty to keep current)</label>
+            <input type="file" name="main_image" accept="image/*">
+          </div>
+          <div class="form-group">
+            <label>Add more thumbnails (existing ones will be kept)</label>
+            <input type="file" name="thumbnails" multiple accept="image/*">
+          </div>
+
+          <div>
+            <button type="submit" class="btn">Update property</button>
+            <a href="/admin/dashboard" class="btn secondary">Cancel</a>
+          </div>
+        </form>
+      `;
+
+      // Render the image gallery after the form is inserted
+      renderImageGallery(p);
+    }
+
+    // Render current images with delete buttons
+    function renderImageGallery(p) {
+      const gallery = document.getElementById('current-images');
+      gallery.innerHTML = '';
+
+      // Main image
+      if (p.main_image) {
+        const item = document.createElement('div');
+        item.className = 'image-item';
+        item.innerHTML = `
+          <img src="${p.main_image}" alt="Main image">
+          <button class="delete-btn" onclick="deleteImage('${p.main_image}')"><i class="fas fa-trash"></i></button>
+          <div class="main-image-label">Main</div>
+        `;
+        gallery.appendChild(item);
+      }
+
+      // Thumbnails
+      if (p.thumbnails && p.thumbnails.length) {
+        p.thumbnails.forEach((thumb, index) => {
+          const item = document.createElement('div');
+          item.className = 'image-item';
+          item.innerHTML = `
+            <img src="${thumb}" alt="Thumbnail ${index+1}">
+            <button class="delete-btn" onclick="deleteImage('${thumb}')"><i class="fas fa-trash"></i></button>
+          `;
+          gallery.appendChild(item);
+        });
+      }
+
+      if (!p.main_image && (!p.thumbnails || p.thumbnails.length === 0)) {
+        gallery.innerHTML = '<p style="color:#5e6e85;">No images uploaded.</p>';
+      }
+    }
+
+    // Delete image function
+    window.deleteImage = async function(imageUrl) {
+      if (!confirm('Delete this image? This action cannot be undone.')) return;
+
+      try {
+        const res = await fetch(`/admin/properties/${propertyId}/images`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ imageUrl })
+        });
+        if (!res.ok) throw new Error('Failed to delete');
+        // Reload property to refresh gallery
+        const propRes = await fetch(`/api/properties/${propertyId}`);
+        const updatedProp = await propRes.json();
+        currentProperty = updatedProp;
+        renderImageGallery(updatedProp);
+      } catch (err) {
+        alert('Error deleting image');
+        console.error(err);
+      }
+    };
+
+    // Helper to escape HTML
+    function escapeHtml(unsafe) {
+      if (!unsafe) return '';
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // Initialize
+    loadProperty();
+  </script>
+</body>
+</html>

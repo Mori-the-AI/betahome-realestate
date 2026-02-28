@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inquiries · Lagos Prime Estates</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background-color: #f8f6f4;
+      color: #2a2a2a;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: #003153;
+      border-left: 8px solid #c97c4d;
+      padding-left: 1.4rem;
+      margin-bottom: 2rem;
+    }
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .btn {
+      background-color: #003153;
+      color: white;
+      text-decoration: none;
+      padding: 0.6rem 1.8rem;
+      border: 2px solid #003153;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: 0.1s;
+      display: inline-block;
+    }
+    .btn:hover {
+      background-color: #0a4065;
+    }
+    .btn.warning {
+      background-color: #b45f2e;
+      border-color: #a75828;
+    }
+    .btn.warning:hover {
+      background-color: #9e4f20;
+    }
+    .btn.small {
+      padding: 0.3rem 1rem;
+      font-size: 0.85rem;
+      margin-right: 0.5rem;
+    }
+    /* Table wrapper for horizontal scroll on mobile */
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 8px;
+      box-shadow: 6px 6px 0 #a75828;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border: 2px solid #2a405c;
+      border-radius: 8px;
+      min-width: 800px; /* forces scroll on small screens */
+    }
+    th {
+      background-color: #003153;
+      color: white;
+      font-weight: 600;
+      text-align: left;
+      padding: 0.8rem 1rem;
+    }
+    td {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid #d9d2c5;
+      vertical-align: top;
+    }
+    tr.unread {
+      background-color: #fff7e6;
+      font-weight: 500;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .message-preview {
+      max-width: 300px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .badge {
+      display: inline-block;
+      background-color: #c97c4d;
+      color: white;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .actions button {
+      background: none;
+      border: 1px solid #003153;
+      border-radius: 4px;
+      padding: 0.3rem 0.8rem;
+      cursor: pointer;
+      font-size: 0.8rem;
+      margin-right: 0.3rem;
+    }
+    .actions button.mark-read {
+      border-color: #c97c4d;
+      color: #c97c4d;
+    }
+    .actions button.mark-read:hover {
+      background-color: #c97c4d;
+      color: white;
+    }
+    .actions button.delete {
+      border-color: #b45f2e;
+      color: #b45f2e;
+    }
+    .actions button.delete:hover {
+      background-color: #b45f2e;
+      color: white;
+    }
+    .date {
+      font-size: 0.8rem;
+      color: #5e6e85;
+    }
+
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      body { padding: 1rem; }
+      h2 { font-size: 1.6rem; }
+      .header-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .header-bar div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .header-bar .btn {
+        text-align: center;
+      }
+      .table-wrapper {
+        box-shadow: none;
+      }
+      table {
+        min-width: 700px; /* still scroll, but slightly smaller */
+      }
+      td, th {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+      }
+      .actions button {
+        padding: 0.2rem 0.5rem;
+        font-size: 0.75rem;
+        margin-bottom: 0.2rem;
+      }
+    }
+    @media (max-width: 480px) {
+      table {
+        min-width: 600px;
+      }
+      .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header-bar">
+      <h2>Contact inquiries</h2>
+      <div>
+        <a href="/admin/dashboard" class="btn">← Dashboard</a>
+        <a href="/admin/logout" class="btn warning">Logout</a>
+      </div>
+    </div>
+    <div class="table-wrapper">
+      <table id="inquiries-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Email / Phone</th>
+            <th>Subject</th>
+            <th>Message</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="inquiries-body">
+          <tr><td colspan="7" style="text-align:center;">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    async function loadInquiries() {
+      const tbody = document.getElementById('inquiries-body');
+      try {
+        const res = await fetch('/api/inquiries');
+        if (!res.ok) throw new Error('Failed to load');
+        const inquiries = await res.json();
+        if (inquiries.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">No inquiries yet.</td></tr>';
+          return;
+        }
+        let html = '';
+        inquiries.forEach(inq => {
+          const unreadClass = inq.read ? '' : 'unread';
+          const date = new Date(inq.date).toLocaleString('en-NG', { dateStyle: 'short', timeStyle: 'short' });
+          html += `
+            <tr class="${unreadClass}" data-id="${inq.id}">
+              <td class="date">${date}</td>
+              <td>${escapeHtml(inq.name)}</td>
+              <td>
+                <a href="mailto:${escapeHtml(inq.email)}">${escapeHtml(inq.email)}</a><br>
+                ${inq.phone ? `<a href="tel:${escapeHtml(inq.phone)}">${escapeHtml(inq.phone)}</a>` : ''}
+              </td>
+              <td>${escapeHtml(inq.subject)}</td>
+              <td class="message-preview" title="${escapeHtml(inq.message)}">${escapeHtml(inq.message)}</td>
+              <td>${inq.read ? '<span class="badge" style="background:#6c757d;">Read</span>' : '<span class="badge">New</span>'}</td>
+              <td class="actions">
+                <button class="mark-read" onclick="toggleRead('${inq.id}', ${!inq.read})">${inq.read ? 'Mark unread' : 'Mark read'}</button>
+                <button class="delete" onclick="deleteInquiry('${inq.id}')">Delete</button>
+              </td>
+            </tr>
+          `;
+        });
+        tbody.innerHTML = html;
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#b85c24;">Error loading inquiries.</td></tr>';
+      }
+    }
+
+    function escapeHtml(unsafe) {
+      if (!unsafe) return '';
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    async function toggleRead(id, markAsRead) {
+      try {
+        const res = await fetch(`/api/inquiries/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ read: markAsRead })
+        });
+        if (res.ok) {
+          loadInquiries();
+        } else {
+          alert('Failed to update status');
+        }
+      } catch (err) {
+        alert('Error updating status');
+      }
+    }
+
+    async function deleteInquiry(id) {
+      if (!confirm('Delete this inquiry?')) return;
+      try {
+        const res = await fetch(`/api/inquiries/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+          loadInquiries();
+        } else {
+          alert('Failed to delete');
+        }
+      } catch (err) {
+        alert('Error deleting');
+      }
+    }
+
+    loadInquiries();
+  </script>
+</body>
+</html>

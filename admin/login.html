@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login · Lagos Prime Estates</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background-color: #f8f6f4;
+      color: #2a2a2a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .login-box {
+      background: #ffffff;
+      border: 2px solid #2a405c;
+      border-radius: 8px;
+      box-shadow: 6px 6px 0 #a75828;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 400px;
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      color: #003153;
+      margin-bottom: 1.5rem;
+      border-left: 6px solid #c97c4d;
+      padding-left: 1rem;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      color: #1e2f47;
+      margin-bottom: 0.3rem;
+    }
+    input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid #b3bfcf;
+      border-radius: 6px;
+      background: #f8f6f4;
+      font-size: 1rem;
+      outline: none;
+    }
+    input:focus {
+      border-color: #003153;
+    }
+    .btn {
+      background-color: #003153;
+      color: white;
+      border: 2px solid #003153;
+      border-radius: 6px;
+      padding: 0.8rem 1.5rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
+      transition: 0.1s;
+    }
+    .btn:hover {
+      background-color: #0a4065;
+    }
+    .alert {
+      background-color: #f8d7da;
+      border: 1px solid #f5c2c7;
+      color: #842029;
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+    }
+
+    .alert.success {
+      background-color: #d1e7dd;
+      border-color: #badbcc;
+      color: #0f5132;
+    }
+
+    /* Mobile responsive */
+@media (max-width: 480px) {
+  .login-box {
+    padding: 1.5rem;
+    max-width: 90%;
+  }
+  h2 {
+    font-size: 1.5rem;
+  }
+  input {
+    padding: 0.6rem;
+  }
+  .btn {
+    padding: 0.6rem;
+  }
+}
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Admin login</h2>
+    
+    <!-- Error message area -->
+    <div id="error-message" class="alert" style="display: none;"></div>
+
+    <form method="POST" action="/admin/login">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" name="username" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" name="password" required>
+      </div>
+      <button type="submit" class="btn">Log in</button>
+      <p style="text-align: center; margin-top: 1rem;">
+        <a href="/admin/forgot-password" style="color: #c97c4d; text-decoration: none;">Forgot password?</a>
+        </p>
+    </form>
+  </div>
+
+  <script>
+    // Show error message if URL contains ?error=invalid
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('error') === 'invalid') {
+      const errorDiv = document.getElementById('error-message');
+      errorDiv.textContent = 'Invalid username or password.';
+      errorDiv.style.display = 'block';
+    }
+
+    // After the existing error check, add:
+    if (urlParams.get('success') === 'reset') {
+        const errorDiv = document.getElementById('error-message');
+        errorDiv.textContent = 'Password reset successful. Please log in with your new password.';
+        errorDiv.classList.add('success'); // we need to define .success style
+        errorDiv.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

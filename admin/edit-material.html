@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Material · Lagos Prime Estates</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background-color: #f8f6f4;
+      color: #2a2a2a;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: #003153;
+      border-left: 8px solid #c97c4d;
+      padding-left: 1.4rem;
+      margin-bottom: 2rem;
+    }
+    .form-card {
+      background: white;
+      border: 2px solid #2a405c;
+      border-radius: 8px;
+      box-shadow: 6px 6px 0 #a75828;
+      padding: 2rem;
+    }
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      color: #1e2f47;
+      margin-bottom: 0.3rem;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid #b3bfcf;
+      border-radius: 6px;
+      background: #f8f6f4;
+      font-size: 1rem;
+      outline: none;
+    }
+    input:focus, textarea:focus {
+      border-color: #003153;
+    }
+    .btn {
+      background-color: #003153;
+      color: white;
+      border: 2px solid #003153;
+      border-radius: 6px;
+      padding: 0.8rem 2rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .btn:hover {
+      background-color: #0a4065;
+    }
+    .btn.secondary {
+      background-color: #c97c4d;
+      border-color: #a75828;
+      margin-left: 1rem;
+    }
+    .btn.secondary:hover {
+      background-color: #b45f2e;
+    }
+    .current-img {
+      max-width: 150px;
+      border: 2px solid #c97c4d;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+    @media (max-width: 480px) {
+      .form-card { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Edit material</h2>
+    <div class="form-card" id="editFormContainer">
+      <!-- form will be populated by JS -->
+    </div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const materialId = urlParams.get('id');
+    if (!materialId) {
+      window.location.href = '/admin/materials';
+    }
+
+    async function loadMaterial() {
+      try {
+        const res = await fetch('/api/materials/' + materialId);
+        if (!res.ok) throw new Error('Material not found');
+        const m = await res.json();
+
+        const container = document.getElementById('editFormContainer');
+        container.innerHTML = `
+          <form method="POST" action="/admin/materials/${m.id}" enctype="multipart/form-data">
+            <div class="form-group">
+              <label>Product name *</label>
+              <input type="text" name="name" value="${escapeHtml(m.name)}" required>
+            </div>
+            <div class="form-group">
+              <label>Category *</label>
+              <input type="text" name="category" value="${escapeHtml(m.category)}" required>
+            </div>
+            <div class="form-group">
+              <label>Description</label>
+              <textarea name="description" rows="3">${escapeHtml(m.description || '')}</textarea>
+            </div>
+            <div class="form-group">
+              <label>Price *</label>
+              <input type="text" name="price" value="${escapeHtml(m.price)}" required>
+            </div>
+            <div class="form-group">
+              <label>Price label</label>
+              <input type="text" name="price_label" value="${escapeHtml(m.price_label || '')}">
+            </div>
+            <div class="form-group">
+              <label>Reference</label>
+              <input type="text" name="reference" value="${escapeHtml(m.reference || '')}">
+            </div>
+            ${m.image ? `
+              <div class="form-group">
+                <label>Current image</label><br>
+                <img src="${m.image}" class="current-img" alt="Material">
+              </div>
+            ` : ''}
+            <div class="form-group">
+              <label>Replace image (leave empty to keep current)</label>
+              <input type="file" name="image" accept="image/*">
+            </div>
+            <div>
+              <button type="submit" class="btn">Update material</button>
+              <a href="/admin/materials" class="btn secondary">Cancel</a>
+            </div>
+          </form>
+        `;
+      } catch (err) {
+        console.error(err);
+        document.body.innerHTML = '<h2>Material not found</h2><a href="/admin/materials">Back to materials</a>';
+      }
+    }
+
+    function escapeHtml(unsafe) {
+      if (!unsafe) return '';
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    loadMaterial();
+  </script>
+</body>
+</html>

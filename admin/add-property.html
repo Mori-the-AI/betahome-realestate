@@ -129,6 +129,19 @@
             <input type="number" name="parking">
           </div>
         </div>
+
+        <!-- NEW ROW: Living Rooms + Studio Toggle -->
+        <div class="form-row">
+          <div class="form-group">
+            <label>Living Rooms</label>
+            <input type="number" name="living_rooms" min="0" step="1" value="1">
+          </div>
+          <div class="form-group checkbox" style="display: flex; align-items: center; margin-top: 1.5rem;">
+            <input type="checkbox" name="is_studio" id="is_studio">
+            <label for="is_studio">This is a studio apartment</label>
+          </div>
+        </div>
+
         <div class="form-group">
           <label>Description</label>
           <textarea name="description" rows="4"></textarea>

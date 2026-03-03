@@ -301,6 +301,9 @@ app.post('/admin/properties', upload.fields([
     price_small: req.body.price_small || '',
     bedrooms: req.body.bedrooms ? parseFloat(req.body.bedrooms) : 0,
     bathrooms: req.body.bathrooms ? parseFloat(req.body.bathrooms) : 0,
+    // NEW FIELDS
+    living_rooms: req.body.living_rooms ? parseInt(req.body.living_rooms) : 1,
+    is_studio: req.body.is_studio === 'on',
     area: req.body.area || '',
     parking: req.body.parking ? parseInt(req.body.parking) : 0,
     description: req.body.description || '',
@@ -335,6 +338,9 @@ app.post('/admin/properties/:id', upload.fields([
     price_small: req.body.price_small || existing.price_small,
     bedrooms: req.body.bedrooms ? parseFloat(req.body.bedrooms) : existing.bedrooms,
     bathrooms: req.body.bathrooms ? parseFloat(req.body.bathrooms) : existing.bathrooms,
+    // NEW FIELDS
+    living_rooms: req.body.living_rooms ? parseInt(req.body.living_rooms) : existing.living_rooms,
+    is_studio: req.body.is_studio === 'on',
     area: req.body.area || existing.area,
     parking: req.body.parking ? parseInt(req.body.parking) : existing.parking,
     description: req.body.description || existing.description,
@@ -651,5 +657,3 @@ app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
   console.log(`Admin login: http://localhost:${PORT}/admin/login`);
 });
-
-

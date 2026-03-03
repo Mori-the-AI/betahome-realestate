@@ -299,9 +299,11 @@ app.post('/admin/properties', upload.fields([
     location: req.body.location || '',
     price: req.body.price || '',
     price_small: req.body.price_small || '',
+    // NEW FEE FIELDS
+    doc_fee: req.body.doc_fee || '',
+    logistics_fee: req.body.logistics_fee || '',
     bedrooms: req.body.bedrooms ? parseFloat(req.body.bedrooms) : 0,
     bathrooms: req.body.bathrooms ? parseFloat(req.body.bathrooms) : 0,
-    // NEW FIELDS
     living_rooms: req.body.living_rooms ? parseInt(req.body.living_rooms) : 1,
     is_studio: req.body.is_studio === 'on',
     area: req.body.area || '',
@@ -336,9 +338,11 @@ app.post('/admin/properties/:id', upload.fields([
     location: req.body.location || existing.location,
     price: req.body.price || existing.price,
     price_small: req.body.price_small || existing.price_small,
+    // NEW FEE FIELDS
+    doc_fee: req.body.doc_fee || existing.doc_fee,
+    logistics_fee: req.body.logistics_fee || existing.logistics_fee,
     bedrooms: req.body.bedrooms ? parseFloat(req.body.bedrooms) : existing.bedrooms,
     bathrooms: req.body.bathrooms ? parseFloat(req.body.bathrooms) : existing.bathrooms,
-    // NEW FIELDS
     living_rooms: req.body.living_rooms ? parseInt(req.body.living_rooms) : existing.living_rooms,
     is_studio: req.body.is_studio === 'on',
     area: req.body.area || existing.area,

@@ -150,6 +150,45 @@
       vertical-align: middle;
     }
 
+    /* Price breakdown styles */
+    .price-breakdown {
+      background: #ffffff;
+      border: 2px solid #2a405c;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 6px 6px 0 #800;
+      margin: 2rem 0;
+    }
+    .price-breakdown h3 {
+      font-size: 1.5rem;
+      color: #003153;
+      margin-bottom: 1.2rem;
+    }
+    .price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid #e0e4e9;
+    }
+    .price-row:last-child {
+      border-bottom: none;
+      font-weight: 700;
+      color: #003153;
+      font-size: 1.2rem;
+    }
+    .price-label {
+      color: #4e627b;
+    }
+    .price-value {
+      font-weight: 600;
+      color: #003153;
+    }
+    .total-price {
+      color: #e10b0b;
+      font-size: 1.4rem;
+    }
+
     /* breadcrumb */
     .breadcrumb {
       margin: 1rem 0 2rem;
@@ -527,6 +566,14 @@
         <!-- Key details -->
         <div class="key-details" id="key-details"></div>
 
+        <!-- NEW: Price Breakdown Section -->
+        <div id="price-breakdown-container" style="display: none;">
+          <div class="price-breakdown">
+            <h3>Price Breakdown</h3>
+            <div id="price-breakdown-content"></div>
+          </div>
+        </div>
+
         <!-- Description -->
         <div class="description" id="description"></div>
 
@@ -587,6 +634,18 @@
       window.location.href = 'properties.html';
     }
 
+    // Helper function to parse price string (remove commas and convert to number)
+    function parsePrice(priceStr) {
+      if (!priceStr) return 0;
+      return parseFloat(priceStr.replace(/,/g, '')) || 0;
+    }
+
+    // Helper function to format number with commas
+    function formatPrice(price) {
+      if (!price || isNaN(price)) return '0';
+      return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+
     async function loadProperty() {
       try {
         const res = await fetch(`/api/properties/${propertyId}`);
@@ -628,7 +687,7 @@
         document.getElementById('property-location').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${p.location}`;
         document.getElementById('property-price').innerHTML = `₦${p.price} <small>${p.price_small || ''}</small>`;
 
-        // Key details with new living rooms field
+        // Key details
         const keyDetails = document.getElementById('key-details');
         keyDetails.innerHTML = `
           <div class="detail-item"><i class="fas fa-bed"></i><div class="detail-label">Bedrooms</div><div class="detail-value">${p.bedrooms || 0}</div></div>
@@ -637,6 +696,63 @@
           <div class="detail-item"><i class="fas fa-vector-square"></i><div class="detail-label">Area</div><div class="detail-value">${p.area || '—'}</div></div>
           <div class="detail-item"><i class="fas fa-car"></i><div class="detail-label">Parking</div><div class="detail-value">${p.parking || 0}</div></div>
         `;
+
+        // NEW: Price Breakdown
+        const priceBreakdownContainer = document.getElementById('price-breakdown-container');
+        const priceBreakdownContent = document.getElementById('price-breakdown-content');
+        
+        // Check if either fee exists
+        if (p.doc_fee || p.logistics_fee) {
+          priceBreakdownContainer.style.display = 'block';
+          
+          // Parse prices for calculation
+          const basePrice = parsePrice(p.price);
+          const docFee = parsePrice(p.doc_fee);
+          const logisticsFee = parsePrice(p.logistics_fee);
+          const totalPrice = basePrice + docFee + logisticsFee;
+          
+          let html = '';
+          
+          // Base price row
+          html += `
+            <div class="price-row">
+              <span class="price-label">Property Price:</span>
+              <span class="price-value">₦${p.price || '0'}</span>
+            </div>
+          `;
+          
+          // Document fee row (if exists)
+          if (p.doc_fee) {
+            html += `
+              <div class="price-row">
+                <span class="price-label">Document/Search Fee:</span>
+                <span class="price-value">₦${p.doc_fee}</span>
+              </div>
+            `;
+          }
+          
+          // Logistics fee row (if exists)
+          if (p.logistics_fee) {
+            html += `
+              <div class="price-row">
+                <span class="price-label">Logistics Fee:</span>
+                <span class="price-value">₦${p.logistics_fee}</span>
+              </div>
+            `;
+          }
+          
+          // Total row
+          html += `
+            <div class="price-row">
+              <span class="price-label">Total (incl. fees):</span>
+              <span class="price-value total-price">₦${formatPrice(totalPrice)}</span>
+            </div>
+          `;
+          
+          priceBreakdownContent.innerHTML = html;
+        } else {
+          priceBreakdownContainer.style.display = 'none';
+        }
 
         // Description
         document.getElementById('description').innerHTML = `
